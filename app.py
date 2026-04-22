@@ -23,6 +23,7 @@ def download():
     '720p':  'best[height<=720][ext=mp4]/best[height<=720]',
     '480p':  'best[height<=480][ext=mp4]/best[height<=480]',
     'audio': 'bestaudio/best',
+}
     }
 
     ydl_opts = {
