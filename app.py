@@ -19,10 +19,10 @@ def download():
         return jsonify({'error': 'Please enter a URL'}), 400
 
     format_map = {
-        'best':  'bestvideo[ext=mp4]+bestaudio[ext=m4a]/best[ext=mp4]/best',
-        '720p':  'bestvideo[height<=720][ext=mp4]+bestaudio/best[height<=720]',
-        '480p':  'bestvideo[height<=480][ext=mp4]+bestaudio/best[height<=480]',
-        'audio': 'bestaudio/best',
+    'best':  'best[ext=mp4]/best',
+    '720p':  'best[height<=720][ext=mp4]/best[height<=720]',
+    '480p':  'best[height<=480][ext=mp4]/best[height<=480]',
+    'audio': 'bestaudio/best',
     }
 
     ydl_opts = {
