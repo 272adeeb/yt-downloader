@@ -26,16 +26,21 @@ def download():
     }
 
     ydl_opts = {
-        'outtmpl': f'{DOWNLOAD_FOLDER}/%(title)s.%(ext)s',
-        'format': format_map.get(quality, format_map['best']),
-        'noplaylist': True,
-        'quiet': True,
-        'nocheckcertificate': True,
-'legacy_server_connect': True,
-'retries': 10,
-'fragment_retries': 10,
-'retry_sleep_functions': {'http': lambda n: 3},
-    }
+    'outtmpl': f'{DOWNLOAD_FOLDER}/%(title)s.%(ext)s',
+    'format': format_map.get(quality, format_map['best']),
+    'noplaylist': True,
+    'quiet': True,
+    'nocheckcertificate': True,
+    'extractor_args': {
+        'youtube': {
+            'player_client': ['android', 'web'],
+        }
+    },
+    'legacy_server_connect': True,
+    'retries': 10,
+    'fragment_retries': 10,
+    'retry_sleep_functions': {'http': lambda n: 3},
+}
 
     if quality == 'audio':
         ydl_opts['postprocessors'] = [{
