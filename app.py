@@ -5,6 +5,13 @@ app = Flask(__name__)
 DOWNLOAD_FOLDER = 'downloads'
 os.makedirs(DOWNLOAD_FOLDER, exist_ok=True)
 
+FORMAT_MAP = {
+    'best':  'best[ext=mp4]/best',
+    '720p':  'best[height<=720][ext=mp4]/best[height<=720]',
+    '480p':  'best[height<=480][ext=mp4]/best[height<=480]',
+    'audio': 'bestaudio/best',
+}
+
 @app.route('/')
 def index():
     return send_from_directory('.', 'index.html')
@@ -18,37 +25,16 @@ def download():
     if not url:
         return jsonify({'error': 'Please enter a URL'}), 400
 
-    format_map = {
-    'best':  'best[ext=mp4]/best',
-    '720p':  'best[height<=720][ext=mp4]/best[height<=720]',
-    '480p':  'best[height<=480][ext=mp4]/best[height<=480]',
-    'audio': 'bestaudio/best',
-}
-    }
-
     ydl_opts = {
-    'outtmpl': f'{DOWNLOAD_FOLDER}/%(title)s.%(ext)s',
-    'format': format_map.get(quality, format_map['best']),
-    'noplaylist': True,
-    'quiet': True,
-    'nocheckcertificate': True,
-    'extractor_args': {
-        'youtube': {
-            'player_client': ['android', 'web'],
-        }
-    },
-    'legacy_server_connect': True,
-    'retries': 10,
-    'fragment_retries': 10,
-    'retry_sleep_functions': {'http': lambda n: 3},
-}
-
-    if quality == 'audio':
-        ydl_opts['postprocessors'] = [{
-            'key': 'FFmpegExtractAudio',
-            'preferredcodec': 'mp3',
-            'preferredquality': '192',
-        }]
+        'outtmpl': f'{DOWNLOAD_FOLDER}/%(title)s.%(ext)s',
+        'format': FORMAT_MAP.get(quality, FORMAT_MAP['best']),
+        'noplaylist': True,
+        'quiet': True,
+        'nocheckcertificate': True,
+        'legacy_server_connect': True,
+        'retries': 10,
+        'fragment_retries': 10,
+    }
 
     try:
         with yt_dlp.YoutubeDL(ydl_opts) as ydl:
@@ -71,4 +57,4 @@ def serve_file(filename):
 
 if __name__ == '__main__':
     port = int(os.environ.get('PORT', 5000))
-app.run(host='0.0.0.0', port=port, debug=False)
+    app.run(host='0.0.0.0', port=port, debug=False)
