@@ -1,0 +1,229 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>VidSave — YouTube Downloader</title>
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Outfit:wght@300;400;600&family=JetBrains+Mono&display=swap" rel="stylesheet">
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  body {
+    min-height: 100vh;
+    background: #08080f;
+    color: #f0f0f8;
+    font-family: 'Outfit', sans-serif;
+    display: flex; flex-direction: column;
+    align-items: center; justify-content: center;
+    padding: 40px 20px;
+  }
+  body::before {
+    content: '';
+    position: fixed; inset: 0;
+    background: radial-gradient(ellipse 800px 500px at 50% 0%, rgba(255,50,50,0.06), transparent 70%);
+    pointer-events: none;
+  }
+  .logo {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 52px; letter-spacing: 4px;
+    color: #ff3c3c; margin-bottom: 4px;
+    text-align: center;
+  }
+  .tagline {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px; letter-spacing: 3px;
+    color: #444460; text-transform: uppercase;
+    text-align: center; margin-bottom: 48px;
+  }
+  .card {
+    width: 100%; max-width: 620px;
+    background: #111118;
+    border: 1px solid #1e1e30;
+    border-radius: 8px;
+    padding: 36px;
+    position: relative;
+  }
+  .card::before {
+    content: '';
+    position: absolute; top: 0; left: 0; right: 0;
+    height: 2px; border-radius: 8px 8px 0 0;
+    background: linear-gradient(90deg, transparent, #ff3c3c, transparent);
+  }
+  .quality-row {
+    display: flex; gap: 8px; flex-wrap: wrap;
+    margin-bottom: 16px;
+  }
+  .q-btn {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px; letter-spacing: 1px;
+    padding: 8px 16px; border-radius: 4px;
+    border: 1px solid #1e1e30;
+    background: transparent; color: #555570;
+    cursor: pointer; transition: all 0.15s;
+  }
+  .q-btn.active, .q-btn:hover {
+    border-color: #ff3c3c;
+    color: #ff3c3c;
+    background: rgba(255,60,60,0.08);
+  }
+  .input-row {
+    display: flex; gap: 10px; margin-bottom: 20px;
+  }
+  input[type=url] {
+    flex: 1;
+    background: #0a0a12;
+    border: 1px solid #1e1e30;
+    border-radius: 4px;
+    color: #f0f0f8;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 13px;
+    padding: 14px 16px;
+    outline: none;
+    transition: border-color 0.2s;
+  }
+  input[type=url]:focus { border-color: #ff3c3c; }
+  input::placeholder { color: #333350; }
+  .btn {
+    background: #ff3c3c; color: #fff;
+    border: none; border-radius: 4px;
+    padding: 0 24px;
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 20px; letter-spacing: 2px;
+    cursor: pointer; transition: opacity 0.2s;
+    white-space: nowrap;
+  }
+  .btn:hover { opacity: 0.85; }
+  .btn:disabled { opacity: 0.4; cursor: not-allowed; }
+  .status { display: none; margin-top: 20px; }
+  .status.show { display: block; }
+  .progress-wrap {
+    height: 3px; background: #1e1e30;
+    border-radius: 2px; overflow: hidden; margin-bottom: 12px;
+  }
+  .progress {
+    height: 100%; background: #ff3c3c; width: 0%;
+    transition: width 0.3s;
+  }
+  .progress.running { animation: run 1.5s infinite; width: 40%; }
+  @keyframes run {
+    0% { transform: translateX(-150%); }
+    100% { transform: translateX(350%); }
+  }
+  .status-text { font-size: 14px; }
+  .status-text.ok { color: #3dffa0; }
+  .status-text.err { color: #ff5566; }
+  .dl-link {
+    display: inline-flex; align-items: center; gap: 8px;
+    margin-top: 14px;
+    background: #3dffa0; color: #000;
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 18px; letter-spacing: 2px;
+    padding: 12px 24px; border-radius: 4px;
+    text-decoration: none; transition: opacity 0.2s;
+  }
+  .dl-link:hover { opacity: 0.85; }
+  .platforms {
+    display: flex; flex-wrap: wrap; gap: 8px;
+    margin-top: 28px; justify-content: center;
+  }
+  .plat {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 10px; letter-spacing: 1px;
+    padding: 4px 10px; border-radius: 2px;
+    border: 1px solid #1e1e30; color: #333350;
+  }
+  .footer {
+    margin-top: 32px;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px; color: #333350; text-align: center;
+  }
+</style>
+</head>
+<body>
+
+<div class="logo">VIDSAVE</div>
+<div class="tagline">// Download Any Video · No Watermark · Free · If error occurs, try again</div>
+
+<div class="card">
+  <div class="quality-row">
+    <button class="q-btn active" data-q="best" onclick="setQ(this)">Best</button>
+    <button class="q-btn" data-q="720p" onclick="setQ(this)">720p</button>
+    <button class="q-btn" data-q="480p" onclick="setQ(this)">480p</button>
+    <button class="q-btn" data-q="audio" onclick="setQ(this)">Audio MP3</button>
+  </div>
+  <div class="input-row">
+    <input type="url" id="urlInput" placeholder="Paste YouTube / TikTok / Instagram URL...">
+    <button class="btn" id="dlBtn" onclick="startDL()">GET</button>
+  </div>
+  <div class="status" id="status">
+    <div class="progress-wrap"><div class="progress" id="prog"></div></div>
+    <div class="status-text" id="statusTxt">Processing...</div>
+    <div id="linkWrap"></div>
+  </div>
+</div>
+
+<div class="platforms">
+  <span class="plat">YouTube</span><span class="plat">TikTok</span>
+  <span class="plat">Instagram</span><span class="plat">Twitter</span>
+  <span class="plat">Facebook</span><span class="plat">Reddit</span>
+  <span class="plat">1000+ sites</span>
+</div>
+
+<div class="footer">For personal use only · Respect copyright laws</div>
+
+<script>
+let quality = 'best';
+function setQ(btn) {
+  document.querySelectorAll('.q-btn').forEach(b => b.classList.remove('active'));
+  btn.classList.add('active');
+  quality = btn.dataset.q;
+}
+
+async function startDL() {
+  const url = document.getElementById('urlInput').value.trim();
+  if (!url) { document.getElementById('urlInput').style.borderColor = '#ff5566'; return; }
+  document.getElementById('urlInput').style.borderColor = '';
+
+  const status = document.getElementById('status');
+  const prog = document.getElementById('prog');
+  const txt = document.getElementById('statusTxt');
+  const linkWrap = document.getElementById('linkWrap');
+  const btn = document.getElementById('dlBtn');
+
+  status.classList.add('show');
+  prog.className = 'progress running';
+  txt.className = 'status-text';
+  txt.textContent = 'Fetching video...';
+  linkWrap.innerHTML = '';
+  btn.disabled = true;
+
+  try {
+    const res = await fetch('/download', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ url, quality })
+    });
+    const data = await res.json();
+    prog.className = 'progress';
+    prog.style.width = '100%';
+
+    if (data.error) {
+      txt.className = 'status-text err';
+      txt.textContent = '✕ ' + data.error;
+    } else {
+      txt.className = 'status-text ok';
+      txt.textContent = '✓ Ready: ' + data.title;
+      linkWrap.innerHTML = `<a class="dl-link" href="/file/${encodeURIComponent(data.filename)}" download>⬇ SAVE FILE</a>`;
+    }
+  } catch(e) {
+    txt.className = 'status-text err';
+    txt.textContent = '✕ Error — is the server running?';
+  }
+  btn.disabled = false;
+}
+
+document.getElementById('urlInput').addEventListener('keydown', e => {
+  if (e.key === 'Enter') startDL();
+});
+</script>
+</body>
+</html>
