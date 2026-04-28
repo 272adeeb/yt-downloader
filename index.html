@@ -4,11 +4,11 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>VidSave — Free Video Downloader No Watermark</title>
-<meta name="description" content="Free video downloader. Download TikTok, Instagram, YouTube, Twitter videos without watermark. No signup needed. Fast and free.">
-<meta name="keywords" content="video downloader, tiktok downloader, instagram downloader, youtube downloader, no watermark, free video downloader">
+<meta name="description" content="Free video downloader. Download TikTok, Instagram, Twitter, Facebook videos without watermark. No signup needed. Fast and free.">
+<meta name="keywords" content="video downloader, tiktok downloader, instagram downloader, twitter video downloader, no watermark, free video downloader">
 <meta name="robots" content="index, follow">
 <meta property="og:title" content="VidSave — Free Video Downloader No Watermark">
-<meta property="og:description" content="Download any video without watermark. Free, fast, no signup required.">
+<meta property="og:description" content="Download TikTok, Instagram, Twitter videos without watermark. Free, fast, no signup.">
 <meta property="og:type" content="website">
 <meta property="og:url" content="https://yt-downloader-production-9fc1.up.railway.app">
 <link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Sans:wght@300;400;500;600&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
@@ -94,9 +94,11 @@ footer a:hover { color: var(--ink); }
     <h1>Download <em>anything,</em><br>instantly free.</h1>
     <p class="hero-sub">Paste any video URL and download it clean — no watermarks, no sign-up required.</p>
     <div class="platform-list">
-      <span class="plat">YouTube</span><span class="plat">TikTok</span>
-      <span class="plat">Instagram</span><span class="plat">Twitter</span>
-      <span class="plat">Facebook</span><span class="plat">Reddit</span>
+      <span class="plat">TikTok</span>
+      <span class="plat">Instagram</span>
+      <span class="plat">Twitter</span>
+      <span class="plat">Facebook</span>
+      <span class="plat">Reddit</span>
       <span class="plat">+1000 more</span>
     </div>
   </div>
@@ -111,7 +113,7 @@ footer a:hover { color: var(--ink); }
       <div class="input-icon">
         <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M10 13a5 5 0 007.54.54l3-3a5 5 0 00-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 00-7.54-.54l-3 3a5 5 0 007.07 7.07l1.71-1.71"/></svg>
       </div>
-      <input type="url" id="urlInput" placeholder="Paste video URL here...">
+      <input type="url" id="urlInput" placeholder="Paste TikTok, Instagram, Twitter URL...">
       <button class="btn-get" id="dlBtn" onclick="startDL()">Download</button>
     </div>
     <div class="divider" id="divider"></div>
@@ -203,7 +205,7 @@ async function startDL() {
     dot.className = 'status-dot error';
     label.textContent = 'Error';
     msg.className = 'status-msg error';
-    msg.textContent = 'Server error — please try again.';
+    msg.textContent = 'Please try again.';
   }
   btn.disabled = false;
 }
