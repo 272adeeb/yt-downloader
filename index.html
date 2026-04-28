@@ -1,218 +1,245 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>VidSave — Free Video Downloader No Watermark</title>
-<meta name="description" content="Free video downloader. Download TikTok, Instagram, Twitter, Facebook videos without watermark. No signup needed. Fast and free.">
-<meta name="keywords" content="video downloader, tiktok downloader, instagram downloader, twitter video downloader, no watermark, free video downloader">
-<meta name="robots" content="index, follow">
-<meta property="og:title" content="VidSave — Free Video Downloader No Watermark">
-<meta property="og:description" content="Download TikTok, Instagram, Twitter videos without watermark. Free, fast, no signup.">
-<meta property="og:type" content="website">
-<meta property="og:url" content="https://yt-downloader-production-9fc1.up.railway.app">
-<link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Sans:wght@300;400;500;600&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
-<style>
-*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
-:root {
-  --bg: #fafaf8; --white: #ffffff; --ink: #111110; --ink2: #3a3a38;
-  --muted: #9a9a96; --border: #e8e8e4; --border2: #d4d4ce;
-  --green: #16a34a; --red: #dc2626;
-  --shadow-lg: 0 2px 8px rgba(0,0,0,0.08), 0 16px 48px rgba(0,0,0,0.06);
-}
-html { scroll-behavior: smooth; }
-body { background: var(--bg); color: var(--ink); font-family: 'DM Sans', sans-serif; font-weight: 400; min-height: 100vh; line-height: 1.6; }
-nav { position: fixed; top: 0; left: 0; right: 0; z-index: 100; background: rgba(250,250,248,0.92); backdrop-filter: blur(12px); border-bottom: 1px solid var(--border); padding: 0 40px; height: 60px; display: flex; align-items: center; justify-content: space-between; }
-.logo { font-family: 'DM Serif Display', serif; font-size: 22px; color: var(--ink); letter-spacing: -0.5px; }
-.logo span { font-style: italic; color: var(--muted); }
-.nav-right { font-family: 'DM Mono', monospace; font-size: 11px; color: var(--muted); letter-spacing: 1px; }
-main { min-height: 100vh; display: flex; flex-direction: column; align-items: center; justify-content: center; padding: 100px 24px 80px; }
-.hero { text-align: center; max-width: 600px; margin-bottom: 48px; animation: fadeUp 0.6s cubic-bezier(0.16,1,0.3,1) both; }
-@keyframes fadeUp { from { opacity: 0; transform: translateY(24px); } to { opacity: 1; transform: translateY(0); } }
-.hero-label { display: inline-flex; align-items: center; gap: 6px; font-family: 'DM Mono', monospace; font-size: 11px; letter-spacing: 2px; text-transform: uppercase; color: var(--muted); margin-bottom: 24px; }
-.hero-label::before, .hero-label::after { content: '—'; color: var(--border2); }
-h1 { font-family: 'DM Serif Display', serif; font-size: clamp(42px, 8vw, 72px); line-height: 1.05; letter-spacing: -2px; color: var(--ink); margin-bottom: 16px; }
-h1 em { font-style: italic; color: var(--muted); }
-.hero-sub { font-size: 16px; color: var(--muted); font-weight: 300; max-width: 420px; margin: 0 auto 28px; }
-.platform-list { display: flex; flex-wrap: wrap; gap: 6px; justify-content: center; }
-.plat { font-family: 'DM Mono', monospace; font-size: 10px; letter-spacing: 1px; padding: 4px 10px; border: 1px solid var(--border2); border-radius: 100px; color: var(--muted); background: var(--white); }
-.card { width: 100%; max-width: 580px; background: var(--white); border: 1px solid var(--border); border-radius: 16px; padding: 36px; box-shadow: var(--shadow-lg); animation: fadeUp 0.6s 0.1s cubic-bezier(0.16,1,0.3,1) both; }
-.quality-tabs { display: flex; background: var(--bg); border: 1px solid var(--border); border-radius: 8px; padding: 4px; gap: 2px; margin-bottom: 20px; }
-.q-tab { flex: 1; font-family: 'DM Sans', sans-serif; font-size: 13px; font-weight: 500; padding: 8px 4px; border: none; border-radius: 6px; background: transparent; color: var(--muted); cursor: pointer; transition: all 0.15s; text-align: center; }
-.q-tab.active { background: var(--white); color: var(--ink); box-shadow: 0 1px 3px rgba(0,0,0,0.08); }
-.input-group { display: flex; border: 1.5px solid var(--border2); border-radius: 10px; overflow: hidden; margin-bottom: 16px; transition: border-color 0.2s, box-shadow 0.2s; background: var(--white); }
-.input-group:focus-within { border-color: var(--ink); box-shadow: 0 0 0 3px rgba(17,17,16,0.06); }
-.input-icon { display: flex; align-items: center; padding: 0 14px; color: var(--muted); }
-#urlInput { flex: 1; border: none; outline: none; font-family: 'DM Mono', monospace; font-size: 13px; color: var(--ink); background: transparent; padding: 14px 0; }
-#urlInput::placeholder { color: var(--border2); }
-.btn-get { background: var(--ink); color: var(--white); border: none; padding: 0 24px; font-family: 'DM Sans', sans-serif; font-size: 14px; font-weight: 600; cursor: pointer; transition: opacity 0.15s; white-space: nowrap; }
-.btn-get:hover { opacity: 0.85; }
-.btn-get:disabled { opacity: 0.4; cursor: not-allowed; }
-.divider { height: 1px; background: var(--border); margin: 20px 0; display: none; }
-.divider.show { display: block; }
-.status { display: none; }
-.status.show { display: block; }
-.status-header { display: flex; align-items: center; gap: 10px; margin-bottom: 12px; }
-.status-dot { width: 8px; height: 8px; border-radius: 50%; background: var(--border2); flex-shrink: 0; }
-.status-dot.loading { background: var(--ink); animation: blink 1s infinite; }
-.status-dot.success { background: var(--green); }
-.status-dot.error { background: var(--red); }
-@keyframes blink { 0%, 100% { opacity: 1; } 50% { opacity: 0.2; } }
-.status-label { font-family: 'DM Mono', monospace; font-size: 12px; color: var(--muted); }
-.progress-track { height: 2px; background: var(--border); border-radius: 2px; overflow: hidden; margin-bottom: 12px; }
-.progress-fill { height: 100%; background: var(--ink); width: 0%; transition: width 0.3s; border-radius: 2px; }
-.progress-fill.running { animation: slide 1.2s infinite; width: 35%; }
-@keyframes slide { 0% { transform: translateX(-200%); } 100% { transform: translateX(400%); } }
-.status-msg { font-size: 14px; color: var(--ink2); }
-.status-msg.success { color: var(--green); font-weight: 500; }
-.status-msg.error { color: var(--red); }
-.dl-wrap { margin-top: 16px; display: none; }
-.dl-wrap.show { display: flex; }
-.btn-download { display: inline-flex; align-items: center; gap: 8px; background: var(--green); color: white; font-family: 'DM Sans', sans-serif; font-size: 14px; font-weight: 600; padding: 12px 22px; border-radius: 8px; text-decoration: none; transition: opacity 0.15s, transform 0.15s; }
-.btn-download:hover { opacity: 0.9; transform: translateY(-1px); }
-.how { width: 100%; max-width: 580px; margin-top: 40px; animation: fadeUp 0.6s 0.2s cubic-bezier(0.16,1,0.3,1) both; }
-.how-label { font-family: 'DM Mono', monospace; font-size: 10px; letter-spacing: 2px; text-transform: uppercase; color: var(--muted); text-align: center; margin-bottom: 20px; }
-.how-steps { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1px; background: var(--border); border: 1px solid var(--border); border-radius: 12px; overflow: hidden; }
-.how-step { background: var(--white); padding: 20px; text-align: center; }
-.how-num { font-family: 'DM Serif Display', serif; font-size: 32px; color: var(--border2); line-height: 1; margin-bottom: 6px; }
-.how-title { font-size: 13px; font-weight: 600; color: var(--ink); margin-bottom: 4px; }
-.how-desc { font-size: 12px; color: var(--muted); line-height: 1.5; }
-footer { text-align: center; padding: 32px 24px; font-family: 'DM Mono', monospace; font-size: 11px; color: var(--muted); border-top: 1px solid var(--border); letter-spacing: 0.5px; }
-footer a { color: var(--muted); text-decoration: none; }
-footer a:hover { color: var(--ink); }
-@media(max-width: 560px) { nav { padding: 0 20px; } .card { padding: 20px; } .how-steps { grid-template-columns: 1fr; } }
-</style>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>VidSave — Free Video Downloader No Watermark</title>
+    <meta name="description" content="Free video downloader. Download TikTok, Instagram, Twitter, Facebook videos without watermark. No signup needed. Fast and free.">
+    <meta name="keywords" content="video downloader, tiktok downloader, instagram downloader, twitter video downloader, no watermark, free video downloader">
+    <meta name="robots" content="index, follow">
+    <meta property="og:title" content="VidSave — Free Video Downloader No Watermark">
+    <meta property="og:description" content="Download TikTok, Instagram, Twitter videos without watermark. Free, fast, no signup.">
+    <meta property="og:type" content="website">
+    <link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Sans:wght@300;400;500;600&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+    <style>
+        *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+        :root {
+            --bg: #fafaf8; --white: #ffffff; --ink: #111110; --ink2: #3a3a38;
+            --muted: #9a9a96; --border: #e8e8e4; --border2: #d4d4ce;
+            --green: #16a34a; --red: #dc2626;
+            --shadow-lg: 0 2px 8px rgba(0,0,0,0.08), 0 16px 48px rgba(0,0,0,0.06);
+        }
+        html { scroll-behavior: smooth; }
+        body { background: var(--bg); color: var(--ink); font-family: 'DM Sans', sans-serif; font-weight: 400; min-height: 100vh; line-height: 1.6; }
+        nav { position: fixed; top: 0; left: 0; right: 0; z-index: 100; background: rgba(250,250,248,0.92); backdrop-filter: blur(12px); border-bottom: 1px solid var(--border); padding: 0 40px; height: 60px; display: flex; align-items: center; justify-content: space-between; }
+        .logo { font-family: 'DM Serif Display', serif; font-size: 22px; color: var(--ink); letter-spacing: -0.5px; }
+        .logo span { font-style: italic; color: var(--muted); }
+        .nav-right { font-family: 'DM Mono', monospace; font-size: 11px; color: var(--muted); letter-spacing: 1px; }
+        main { min-height: 100vh; display: flex; flex-direction: column; align-items: center; justify-content: center; padding: 100px 24px 80px; }
+        .hero { text-align: center; max-width: 600px; margin-bottom: 48px; animation: fadeUp 0.6s cubic-bezier(0.16,1,0.3,1) both; }
+        @keyframes fadeUp { from { opacity: 0; transform: translateY(24px); } to { opacity: 1; transform: translateY(0); } }
+        .hero-label { display: inline-flex; align-items: center; gap: 6px; font-family: 'DM Mono', monospace; font-size: 11px; letter-spacing: 2px; text-transform: uppercase; color: var(--muted); margin-bottom: 24px; }
+        .hero-label::before, .hero-label::after { content: '—'; color: var(--border2); }
+        h1 { font-family: 'DM Serif Display', serif; font-size: clamp(42px, 8vw, 72px); line-height: 1.05; letter-spacing: -2px; color: var(--ink); margin-bottom: 16px; }
+        h1 em { font-style: italic; color: var(--muted); }
+        .hero-sub { font-size: 16px; color: var(--muted); font-weight: 300; max-width: 420px; margin: 0 auto 28px; }
+        .platform-list { display: flex; flex-wrap: wrap; gap: 6px; justify-content: center; }
+        .plat { font-family: 'DM Mono', monospace; font-size: 10px; letter-spacing: 1px; padding: 4px 10px; border: 1px solid var(--border2); border-radius: 100px; color: var(--muted); background: var(--white); }
+        .card { width: 100%; max-width: 580px; background: var(--white); border: 1px solid var(--border); border-radius: 16px; padding: 36px; box-shadow: var(--shadow-lg); animation: fadeUp 0.6s 0.1s cubic-bezier(0.16,1,0.3,1) both; }
+        .quality-tabs { display: flex; background: var(--bg); border: 1px solid var(--border); border-radius: 8px; padding: 4px; gap: 2px; margin-bottom: 20px; }
+        .q-tab { flex: 1; font-family: 'DM Sans', sans-serif; font-size: 13px; font-weight: 500; padding: 8px 4px; border: none; border-radius: 6px; background: transparent; color: var(--muted); cursor: pointer; transition: all 0.15s; text-align: center; }
+        .q-tab.active { background: var(--white); color: var(--ink); box-shadow: 0 1px 3px rgba(0,0,0,0.08); }
+        .input-group { display: flex; border: 1.5px solid var(--border2); border-radius: 10px; overflow: hidden; margin-bottom: 16px; transition: border-color 0.2s, box-shadow 0.2s; background: var(--white); }
+        .input-group:focus-within { border-color: var(--ink); box-shadow: 0 0 0 3px rgba(17,17,16,0.06); }
+        .input-icon { display: flex; align-items: center; padding: 0 14px; color: var(--muted); }
+        #urlInput { flex: 1; border: none; outline: none; font-family: 'DM Mono', monospace; font-size: 13px; color: var(--ink); background: transparent; padding: 14px 0; }
+        #urlInput::placeholder { color: var(--border2); }
+        .btn-get { background: var(--ink); color: var(--white); border: none; padding: 0 24px; font-family: 'DM Sans', sans-serif; font-size: 14px; font-weight: 600; cursor: pointer; transition: opacity 0.15s; white-space: nowrap; }
+        .btn-get:hover { opacity: 0.85; }
+        .btn-get:disabled { opacity: 0.4; cursor: not-allowed; }
+        .divider { height: 1px; background: var(--border); margin: 20px 0; display: none; }
+        .divider.show { display: block; }
+        .status { display: none; }
+        .status.show { display: block; }
+        .status-header { display: flex; align-items: center; gap: 10px; margin-bottom: 12px; }
+        .status-dot { width: 8px; height: 8px; border-radius: 50%; background: var(--border2); flex-shrink: 0; }
+        .status-dot.loading { background: var(--ink); animation: blink 1s infinite; }
+        .status-dot.success { background: var(--green); }
+        .status-dot.error { background: var(--red); }
+        @keyframes blink { 0%, 100% { opacity: 1; } 50% { opacity: 0.2; } }
+        .status-label { font-family: 'DM Mono', monospace; font-size: 12px; color: var(--muted); }
+        .progress-track { height: 2px; background: var(--border); border-radius: 2px; overflow: hidden; margin-bottom: 12px; }
+        .progress-fill { height: 100%; background: var(--ink); width: 0%; transition: width 0.3s; border-radius: 2px; }
+        .progress-fill.running { animation: slide 1.2s infinite; width: 35%; }
+        @keyframes slide { 0% { transform: translateX(-200%); } 100% { transform: translateX(400%); } }
+        .status-msg { font-size: 14px; color: var(--ink2); }
+        .status-msg.success { color: var(--green); font-weight: 500; }
+        .status-msg.error { color: var(--red); }
+        .dl-wrap { margin-top: 16px; display: none; }
+        .dl-wrap.show { display: flex; }
+        .btn-download { display: inline-flex; align-items: center; gap: 8px; background: var(--green); color: white; font-family: 'DM Sans', sans-serif; font-size: 14px; font-weight: 600; padding: 12px 22px; border-radius: 8px; text-decoration: none; transition: opacity 0.15s, transform 0.15s; }
+        .btn-download:hover { opacity: 0.9; transform: translateY(-1px); }
+        .how { width: 100%; max-width: 580px; margin-top: 40px; animation: fadeUp 0.6s 0.2s cubic-bezier(0.16,1,0.3,1) both; }
+        .how-label { font-family: 'DM Mono', monospace; font-size: 10px; letter-spacing: 2px; text-transform: uppercase; color: var(--muted); text-align: center; margin-bottom: 20px; }
+        .how-steps { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1px; background: var(--border); border: 1px solid var(--border); border-radius: 12px; overflow: hidden; }
+        .how-step { background: var(--white); padding: 20px; text-align: center; }
+        .how-num { font-family: 'DM Serif Display', serif; font-size: 32px; color: var(--border2); line-height: 1; margin-bottom: 6px; }
+        .how-title { font-size: 13px; font-weight: 600; color: var(--ink); margin-bottom: 4px; }
+        .how-desc { font-size: 12px; color: var(--muted); line-height: 1.5; }
+        footer { text-align: center; padding: 32px 24px; font-family: 'DM Mono', monospace; font-size: 11px; color: var(--muted); border-top: 1px solid var(--border); letter-spacing: 0.5px; }
+        footer a { color: var(--muted); text-decoration: none; }
+        footer a:hover { color: var(--ink); }
+        @media(max-width: 560px) { nav { padding: 0 20px; } .card { padding: 20px; } .how-steps { grid-template-columns: 1fr; } }
+    </style>
 </head>
 <body>
+
 <nav>
-  <div class="logo">Vid<span>Save</span></div>
-  <div class="nav-right">FREE · NO WATERMARK</div>
+    <div class="logo">Vid<span>Save</span></div>
+    <div class="nav-right">FREE · NO WATERMARK</div>
 </nav>
+
 <main>
-  <div class="hero">
-    <div class="hero-label">Video Downloader</div>
-    <h1>Download <em>anything,</em><br>instantly free.</h1>
-    <p class="hero-sub">Paste any video URL and download it clean — no watermarks, no sign-up required.</p>
-    <div class="platform-list">
-      <span class="plat">TikTok</span>
-      <span class="plat">Instagram</span>
-      <span class="plat">Twitter</span>
-      <span class="plat">Facebook</span>
-      <span class="plat">Reddit</span>
-      <span class="plat">+1000 more</span>
+    <div class="hero">
+        <div class="hero-label">Video Downloader</div>
+        <h1>Download <em>anything,</em><br>instantly free.</h1>
+        <p class="hero-sub">Paste any video URL and download it clean — no watermarks, no sign-up required.</p>
+        <div class="platform-list">
+            <span class="plat">TikTok</span>
+            <span class="plat">Instagram</span>
+            <span class="plat">Twitter</span>
+            <span class="plat">Facebook</span>
+            <span class="plat">Reddit</span>
+            <span class="plat">+1000 more</span>
+        </div>
     </div>
-  </div>
-  <div class="card">
-    <div class="quality-tabs">
-      <button class="q-tab active" data-q="best" onclick="setQ(this)">Best Quality</button>
-      <button class="q-tab" data-q="720p" onclick="setQ(this)">720p</button>
-      <button class="q-tab" data-q="480p" onclick="setQ(this)">480p</button>
-      <button class="q-tab" data-q="audio" onclick="setQ(this)">Audio MP3</button>
+
+    <div class="card">
+        <div class="quality-tabs">
+            <button class="q-tab active" data-q="best" onclick="setQ(this)">Best Quality</button>
+            <button class="q-tab" data-q="720p" onclick="setQ(this)">720p</button>
+            <button class="q-tab" data-q="480p" onclick="setQ(this)">480p</button>
+            <button class="q-tab" data-q="audio" onclick="setQ(this)">Audio MP3</button>
+        </div>
+        <div class="input-group">
+            <div class="input-icon">
+                <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M10 13a5 5 0 007.54.54l3-3a5 5 0 00-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 00-7.54-.54l-3 3a5 5 0 007.07 7.07l1.71-1.71"/></svg>
+            </div>
+            <input type="url" id="urlInput" placeholder="Paste TikTok, Instagram, Twitter URL...">
+            <button class="btn-get" id="dlBtn" onclick="startDL()">Download</button>
+        </div>
+
+        <div class="divider" id="divider"></div>
+
+        <div class="status" id="status">
+            <div class="status-header">
+                <div class="status-dot" id="dot"></div>
+                <div class="status-label" id="statusLabel">Processing</div>
+            </div>
+            <div class="progress-track"><div class="progress-fill" id="prog"></div></div>
+            <div class="status-msg" id="statusMsg">Fetching video...</div>
+            
+            <div class="dl-wrap" id="dlWrap">
+                <a href="#" id="saveLink" class="btn-download">
+                    <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4"/><polyline points="7,10 12,15 17,10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+                    Save File
+                </a>
+            </div>
+        </div>
     </div>
-    <div class="input-group">
-      <div class="input-icon">
-        <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M10 13a5 5 0 007.54.54l3-3a5 5 0 00-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 00-7.54-.54l-3 3a5 5 0 007.07 7.07l1.71-1.71"/></svg>
-      </div>
-      <input type="url" id="urlInput" placeholder="Paste TikTok, Instagram, Twitter URL...">
-      <button class="btn-get" id="dlBtn" onclick="startDL()">Download</button>
+
+    <div class="how">
+        <div class="how-label">How it works</div>
+        <div class="how-steps">
+            <div class="how-step"><div class="how-num">1</div><div class="how-title">Paste URL</div><div class="how-desc">Copy the link from any video platform</div></div>
+            <div class="how-step"><div class="how-num">2</div><div class="how-title">Choose Quality</div><div class="how-desc">Pick your preferred format or resolution</div></div>
+            <div class="how-step"><div class="how-num">3</div><div class="how-title">Download</div><div class="how-desc">Get your clean file instantly for free</div></div>
+        </div>
     </div>
-    <div class="divider" id="divider"></div>
-    <div class="status" id="status">
-      <div class="status-header">
-        <div class="status-dot" id="dot"></div>
-        <div class="status-label" id="statusLabel">Processing</div>
-      </div>
-      <div class="progress-track"><div class="progress-fill" id="prog"></div></div>
-      <div class="status-msg" id="statusMsg">Fetching video...</div>
-      <div class="dl-wrap" id="dlWrap">
-        <a href="#" id="saveLink" class="btn-download" download>
-          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4"/><polyline points="7,10 12,15 17,10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
-          Save File
-        </a>
-      </div>
-    </div>
-  </div>
-  <div class="how">
-    <div class="how-label">How it works</div>
-    <div class="how-steps">
-      <div class="how-step"><div class="how-num">1</div><div class="how-title">Paste URL</div><div class="how-desc">Copy the link from any video platform</div></div>
-      <div class="how-step"><div class="how-num">2</div><div class="how-title">Choose Quality</div><div class="how-desc">Pick your preferred format or resolution</div></div>
-      <div class="how-step"><div class="how-num">3</div><div class="how-title">Download</div><div class="how-desc">Get your clean file instantly for free</div></div>
-    </div>
-  </div>
 </main>
-<footer>VidSave &nbsp;·&nbsp; <a href="/privacy">Privacy Policy</a> &nbsp;·&nbsp; <a href="/terms">Terms of Use</a> &nbsp;·&nbsp; © 2026 VidSave</footer>
+
+<footer>VidSave &nbsp;·&nbsp; <a href="#">Privacy Policy</a> &nbsp;·&nbsp; <a href="#">Terms of Use</a> &nbsp;·&nbsp; © 2026 VidSave</footer>
+
 <script>
-const BACKEND = 'https://yt-downloader-production-9fc1.up.railway.app';
-let quality = 'best';
-function setQ(btn) {
-  document.querySelectorAll('.q-tab').forEach(b => b.classList.remove('active'));
-  btn.classList.add('active');
-  quality = btn.dataset.q;
-}
-async function startDL() {
-  const url = document.getElementById('urlInput').value.trim();
-  if (!url) {
-    const group = document.querySelector('.input-group');
-    group.style.borderColor = 'var(--red)';
-    setTimeout(() => group.style.borderColor = '', 1500);
-    return;
-  }
-  const status = document.getElementById('status');
-  const divider = document.getElementById('divider');
-  const prog = document.getElementById('prog');
-  const dot = document.getElementById('dot');
-  const label = document.getElementById('statusLabel');
-  const msg = document.getElementById('statusMsg');
-  const dlWrap = document.getElementById('dlWrap');
-  const btn = document.getElementById('dlBtn');
-  status.classList.add('show');
-  divider.classList.add('show');
-  prog.className = 'progress-fill running';
-  dot.className = 'status-dot loading';
-  label.textContent = 'Processing';
-  msg.className = 'status-msg';
-  msg.textContent = 'Fetching video info...';
-  dlWrap.classList.remove('show');
-  btn.disabled = true;
-  try {
-    const res = await fetch(BACKEND + '/download', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ url, quality })
-    });
-    const data = await res.json();
-    prog.className = 'progress-fill';
-    prog.style.width = '100%';
-    if (data.error) {
-      dot.className = 'status-dot error';
-      label.textContent = 'Failed';
-      msg.className = 'status-msg error';
-      msg.textContent = data.error;
-    } else {
-      dot.className = 'status-dot success';
-      label.textContent = 'Ready';
-      msg.className = 'status-msg success';
-      msg.textContent = '✓ ' + (data.title || 'Video ready');
-      const link = document.getElementById('saveLink');
-      link.href = BACKEND + '/file/' + encodeURIComponent(data.filename);
-      link.download = data.filename;
-      dlWrap.classList.add('show');
+    // Automatically uses the current domain as the backend
+    const BACKEND = window.location.origin;
+    let quality = 'best';
+
+    function setQ(btn) {
+        document.querySelectorAll('.q-tab').forEach(b => b.classList.remove('active'));
+        btn.classList.add('active');
+        quality = btn.dataset.q;
     }
-  } catch(e) {
-    prog.className = 'progress-fill';
-    prog.style.width = '100%';
-    dot.className = 'status-dot error';
-    label.textContent = 'Error';
-    msg.className = 'status-msg error';
-    msg.textContent = 'Please try again.';
-  }
-  btn.disabled = false;
-}
-document.getElementById('urlInput').addEventListener('keydown', e => { if (e.key === 'Enter') startDL(); });
-document.getElementById('urlInput').addEventListener('paste', () => {
-  setTimeout(() => { if (document.getElementById('urlInput').value.startsWith('http')) startDL(); }, 50);
-});
+
+    async function startDL() {
+        const urlInput = document.getElementById('urlInput');
+        const url = urlInput.value.trim();
+        
+        if (!url) {
+            const group = document.querySelector('.input-group');
+            group.style.borderColor = 'var(--red)';
+            setTimeout(() => group.style.borderColor = '', 1500);
+            return;
+        }
+
+        const status = document.getElementById('status');
+        const divider = document.getElementById('divider');
+        const prog = document.getElementById('prog');
+        const dot = document.getElementById('dot');
+        const label = document.getElementById('statusLabel');
+        const msg = document.getElementById('statusMsg');
+        const dlWrap = document.getElementById('dlWrap');
+        const btn = document.getElementById('dlBtn');
+
+        status.classList.add('show');
+        divider.classList.add('show');
+        prog.className = 'progress-fill running';
+        dot.className = 'status-dot loading';
+        label.textContent = 'Processing';
+        msg.className = 'status-msg';
+        msg.textContent = 'Fetching video info...';
+        dlWrap.classList.remove('show');
+        btn.disabled = true;
+
+        try {
+            const res = await fetch(BACKEND + '/download', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ url, quality })
+            });
+            
+            const data = await res.json();
+            prog.className = 'progress-fill';
+            prog.style.width = '100%';
+
+            if (!res.ok || data.error) {
+                dot.className = 'status-dot error';
+                label.textContent = 'Failed';
+                msg.className = 'status-msg error';
+                msg.textContent = data.error || 'The server encountered an error.';
+            } else {
+                dot.className = 'status-dot success';
+                label.textContent = 'Ready';
+                msg.className = 'status-msg success';
+                msg.textContent = '✓ ' + (data.title || 'Video ready');
+                
+                const link = document.getElementById('saveLink');
+                link.href = BACKEND + '/file/' + encodeURIComponent(data.filename);
+                // We let the browser handle the filename from the URL or server headers
+                dlWrap.classList.add('show');
+            }
+        } catch(e) {
+            prog.className = 'progress-fill';
+            prog.style.width = '100%';
+            dot.className = 'status-dot error';
+            label.textContent = 'Error';
+            msg.className = 'status-msg error';
+            msg.textContent = 'Could not connect to server. Please try again.';
+        }
+        btn.disabled = false;
+    }
+
+    // Event Listeners for easier use
+    document.getElementById('urlInput').addEventListener('keydown', e => { 
+        if (e.key === 'Enter') startDL(); 
+    });
+
+    document.getElementById('urlInput').addEventListener('paste', () => {
+        setTimeout(() => { 
+            if (document.getElementById('urlInput').value.startsWith('http')) startDL(); 
+        }, 100);
+    });
 </script>
+
 </body>
 </html>
