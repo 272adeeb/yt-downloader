@@ -5,17 +5,18 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>VidSave — Free Video Downloader No Watermark</title>
 <meta name="description" content="Free video downloader. Download TikTok, Instagram, YouTube, Twitter videos without watermark. No signup needed. Fast and free.">
-<meta name="keywords" content="video downloader, tiktok downloader, instagram downloader, youtube downloader, no watermark, free video downloader, twitter video downloader">
+<meta name="keywords" content="video downloader, tiktok downloader, instagram downloader, youtube downloader, no watermark, free video downloader">
 <meta name="robots" content="index, follow">
 <meta property="og:title" content="VidSave — Free Video Downloader No Watermark">
 <meta property="og:description" content="Download any video without watermark. Free, fast, no signup required.">
 <meta property="og:type" content="website">
+<meta property="og:url" content="https://yt-downloader-production-9fc1.up.railway.app">
 <link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Sans:wght@300;400;500;600&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
 <style>
 *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 :root {
   --bg: #fafaf8; --white: #ffffff; --ink: #111110; --ink2: #3a3a38;
-  --muted: #9a9a96; --border: #e8e8e4; --border2: #d4d4ce; --accent: #1a1a18;
+  --muted: #9a9a96; --border: #e8e8e4; --border2: #d4d4ce;
   --green: #16a34a; --red: #dc2626;
   --shadow-lg: 0 2px 8px rgba(0,0,0,0.08), 0 16px 48px rgba(0,0,0,0.06);
 }
@@ -140,6 +141,7 @@ footer a:hover { color: var(--ink); }
 </main>
 <footer>VidSave &nbsp;·&nbsp; Personal use only &nbsp;·&nbsp; <a href="/privacy">Privacy Policy</a> &nbsp;·&nbsp; Respect copyright laws</footer>
 <script>
+const BACKEND = 'https://yt-downloader-production-9fc1.up.railway.app';
 let quality = 'best';
 function setQ(btn) {
   document.querySelectorAll('.q-tab').forEach(b => b.classList.remove('active'));
@@ -172,7 +174,7 @@ async function startDL() {
   dlWrap.classList.remove('show');
   btn.disabled = true;
   try {
-    const res = await fetch('/download', {
+    const res = await fetch(BACKEND + '/download', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ url, quality })
@@ -191,7 +193,7 @@ async function startDL() {
       msg.className = 'status-msg success';
       msg.textContent = '✓ ' + (data.title || 'Video ready');
       const link = document.getElementById('saveLink');
-      link.href = '/file/' + encodeURIComponent(data.filename);
+      link.href = BACKEND + '/file/' + encodeURIComponent(data.filename);
       link.download = data.filename;
       dlWrap.classList.add('show');
     }
@@ -201,7 +203,7 @@ async function startDL() {
     dot.className = 'status-dot error';
     label.textContent = 'Error';
     msg.className = 'status-msg error';
-    msg.textContent = 'Server error — is the backend running?';
+    msg.textContent = 'Server error — please try again.';
   }
   btn.disabled = false;
 }
