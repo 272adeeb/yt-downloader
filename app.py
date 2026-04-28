@@ -6,7 +6,6 @@ app = Flask(__name__, static_folder='.', template_folder='.')
 DOWNLOAD_FOLDER = 'downloads'
 os.makedirs(DOWNLOAD_FOLDER, exist_ok=True)
 
-# Fixed naming to match usage in the function
 FORMAT_MAP = {
     'best':  'best[ext=mp4]/best',
     '720p':  'best[height<=720][ext=mp4]/best[height<=720]',
