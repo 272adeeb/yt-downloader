@@ -1,11 +1,13 @@
-from flask import Flask, request, jsonify, send_file, send_from_directory
-import yt_dlp, os
+from flask import Flask, request, jsonify, send_file, render_template, send_from_directory
+import yt_dlp
+import os
 
-app = Flask(__name__)
+app = Flask(__name__, static_folder='.', template_folder='.')
 DOWNLOAD_FOLDER = 'downloads'
 os.makedirs(DOWNLOAD_FOLDER, exist_ok=True)
 
-format_map = {
+# Fixed naming to match usage in the function
+FORMAT_MAP = {
     'best':  'best[ext=mp4]/best',
     '720p':  'best[height<=720][ext=mp4]/best[height<=720]',
     '480p':  'best[height<=480][ext=mp4]/best[height<=480]',
@@ -14,6 +16,7 @@ format_map = {
 
 @app.route('/')
 def index():
+    # Make sure your html file is named exactly 'index.html'
     return send_from_directory('.', 'index.html')
 
 @app.route('/download', methods=['POST'])
@@ -31,19 +34,15 @@ def download():
         'noplaylist': True,
         'quiet': True,
         'nocheckcertificate': True,
-        'legacy_server_connect': True,
         'retries': 10,
-        'fragment_retries': 10,
     }
 
     try:
         with yt_dlp.YoutubeDL(ydl_opts) as ydl:
             info = ydl.extract_info(url, download=True)
             title = info.get('title', 'video')
-            filename = ydl.prepare_filename(info)
-            if quality == 'audio':
-                filename = os.path.splitext(filename)[0] + '.mp3'
-            basename = os.path.basename(filename)
+            filepath = ydl.prepare_filename(info)
+            basename = os.path.basename(filepath)
             return jsonify({'filename': basename, 'title': title})
     except Exception as e:
         return jsonify({'error': str(e)}), 400
@@ -57,4 +56,4 @@ def serve_file(filename):
 
 if __name__ == '__main__':
     port = int(os.environ.get('PORT', 5000))
-    app.run(host='0.0.0.0', port=port, debug=False)
+    app.run(host='0.0.0.0', port=port)
