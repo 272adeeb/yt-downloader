@@ -5,7 +5,7 @@ app = Flask(__name__)
 DOWNLOAD_FOLDER = 'downloads'
 os.makedirs(DOWNLOAD_FOLDER, exist_ok=True)
 
-FORMAT_MAP = {
+format_map = {
     'best':  'best[ext=mp4]/best',
     '720p':  'best[height<=720][ext=mp4]/best[height<=720]',
     '480p':  'best[height<=480][ext=mp4]/best[height<=480]',
