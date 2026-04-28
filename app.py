@@ -34,6 +34,7 @@ def download():
         'legacy_server_connect': True,
         'retries': 10,
         'fragment_retries': 10,
+        'cookiefile': 'cookies.txt',
     }
 
     try:
