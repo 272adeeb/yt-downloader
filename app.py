@@ -1,11 +1,12 @@
-from flask import Flask, request, jsonify, send_file, render_template, send_from_directory
+from flask import Flask, request, jsonify, send_file, send_from_directory
 import yt_dlp
 import os
 
-app = Flask(__name__, static_folder='.', template_folder='.')
+app = Flask(__name__)
 DOWNLOAD_FOLDER = 'downloads'
 os.makedirs(DOWNLOAD_FOLDER, exist_ok=True)
 
+# Corrected variable name to match the function call
 FORMAT_MAP = {
     'best':  'best[ext=mp4]/best',
     '720p':  'best[height<=720][ext=mp4]/best[height<=720]',
@@ -15,7 +16,7 @@ FORMAT_MAP = {
 
 @app.route('/')
 def index():
-    # Make sure your html file is named exactly 'index.html'
+    # Looks for 'index.html' in the same folder
     return send_from_directory('.', 'index.html')
 
 @app.route('/download', methods=['POST'])
@@ -33,15 +34,14 @@ def download():
         'noplaylist': True,
         'quiet': True,
         'nocheckcertificate': True,
-        'retries': 10,
     }
 
     try:
         with yt_dlp.YoutubeDL(ydl_opts) as ydl:
             info = ydl.extract_info(url, download=True)
             title = info.get('title', 'video')
-            filepath = ydl.prepare_filename(info)
-            basename = os.path.basename(filepath)
+            filename = ydl.prepare_filename(info)
+            basename = os.path.basename(filename)
             return jsonify({'filename': basename, 'title': title})
     except Exception as e:
         return jsonify({'error': str(e)}), 400
