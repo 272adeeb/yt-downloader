@@ -42,6 +42,10 @@ def download():
     if not url:
         return jsonify({'error': 'Please enter a URL'}), 400
 
+    # Block YouTube URLs
+    if 'youtube.com' in url or 'youtu.be' in url:
+        return jsonify({'error': 'YouTube not supported. Try TikTok, Instagram, Twitter or Facebook.'}), 400
+
     ydl_opts = {
         'outtmpl': f'{DOWNLOAD_FOLDER}/%(title)s.%(ext)s',
         'format': FORMAT_MAP.get(quality, FORMAT_MAP['best']),
